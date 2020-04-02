@@ -70,11 +70,12 @@ public class SastantuaApplicationTests {
         assertEquals(sastantua.exec(niveau), execSastantua(niveau));
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = { 50 })
-    public void shouldAnswerWithTrue9(int niveau) throws IOException, InterruptedException {
-        assertEquals(sastantua.exec(niveau), execSastantua(niveau));
-    }
+    // @ParameterizedTest
+    // @ValueSource(ints = { 50 })
+    // public void shouldAnswerWithTrue9(int niveau) throws IOException,
+    // InterruptedException {
+    // assertEquals(sastantua.exec(niveau), execSastantua(niveau));
+    // }
 
     private String execSastantua(int niveau) throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
