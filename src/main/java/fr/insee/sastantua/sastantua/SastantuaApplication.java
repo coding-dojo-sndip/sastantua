@@ -11,18 +11,26 @@ import java.util.stream.Collectors;
 public class SastantuaApplication {
 
 	public static String exec(int niveau) {
-		List<String> pyramide = new ArrayList<>();
+		List<List<String>> pyramide = new ArrayList<>();
+		int tailleLigne = 3;
+		int tailleEpaules = 3;
+		int tailleEtage = 3;
 		for (int i = 0; i < niveau; i++) {
-			pyramide.addAll(genererEtage(3, 3));
+			List<String> etage = genererEtage(tailleLigne, tailleEtage);
+			pyramide.add(etage);
+			tailleEtage++;
+			tailleLigne = etage.get(etage.size() - 1).length() + 2 * tailleEpaules;
+			tailleEpaules = tailleEpaules + i % 2;
 		}
-		pyramide.set(pyramide.size() - 1, ouvrirPorte(pyramide.get(pyramide.size() - 1)));
-		int taillePyramide = pyramide.get(pyramide.size() - 1).length();
-		return pyramide.stream().map(ligne -> ligneCentree(ligne, taillePyramide)).collect(Collectors.joining("\n"))
-				+ "\n";
+		List<String> dernierEtage = pyramide.get(pyramide.size() - 1);
+		int tailleBasePyramide = dernierEtage.get(dernierEtage.size() - 1).length();
+		ouvrirPorte(dernierEtage);
+		return pyramide.stream().flatMap(etage -> etage.stream()).map(ligne -> ligneCentree(ligne, tailleBasePyramide))
+				.collect(Collectors.joining("\n")) + "\n";
 	}
 
 	public static void main(String[] args) {
-		System.out.println(exec(1));
+		System.out.println(exec(6));
 	}
 	// public static void genererLignes(int nbNiveaux) {
 
@@ -57,10 +65,20 @@ public class SastantuaApplication {
 		return " ".repeat(tailleEspace) + ligneNonCentree;
 	}
 
-	public static String ouvrirPorte(String derniereLigne) {
-		char[] tabderniereligne = derniereLigne.toCharArray();
-		int tailleLigne = tabderniereligne.length;
-		tabderniereligne[tailleLigne / 2] = '|';
-		return String.valueOf(tabderniereligne);
+	public static void ouvrirPorte(List<String> dernierEtage) {
+		int hauteurPorte = (dernierEtage.size() - 3) + (dernierEtage.size() % 2);
+		for (int i = dernierEtage.size() - hauteurPorte; i < dernierEtage.size(); i++) {
+			String ligne = dernierEtage.get(i);
+			char[] tabLigne = ligne.toCharArray();
+			int tailleLigne = tabLigne.length;
+			int debutPorte = (tailleLigne - hauteurPorte) / 2;
+			for (int j = 0; j < hauteurPorte; j++) {
+				tabLigne[debutPorte + j] = '|';
+			}
+			if (hauteurPorte >= 5 && i == dernierEtage.size() - ((hauteurPorte + 1) / 2)) {
+				tabLigne[debutPorte + hauteurPorte - 2] = '$';
+			}
+			dernierEtage.set(i, String.valueOf(tabLigne));
+		}
 	}
 }

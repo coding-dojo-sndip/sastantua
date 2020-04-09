@@ -29,7 +29,7 @@ public class SastantuaApplicationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { -0 })
+    @ValueSource(ints = { 0 })
     public void shouldAnswerWithTrue2(int niveau) throws IOException, InterruptedException {
         assertEquals(sastantua.exec(niveau), execSastantua(niveau));
     }
@@ -70,12 +70,12 @@ public class SastantuaApplicationTests {
         assertEquals(sastantua.exec(niveau), execSastantua(niveau));
     }
 
-    // @ParameterizedTest
-    // @ValueSource(ints = { 50 })
-    // public void shouldAnswerWithTrue9(int niveau) throws IOException,
-    // InterruptedException {
-    // assertEquals(sastantua.exec(niveau), execSastantua(niveau));
-    // }
+    @ParameterizedTest
+     @ValueSource(ints = { 51 })
+    public void shouldAnswerWithTrue9(int niveau) throws IOException,
+     InterruptedException {
+     assertEquals(sastantua.exec(niveau), execSastantua(niveau));
+     }
 
     private String execSastantua(int niveau) throws IOException, InterruptedException {
         Runtime rt = Runtime.getRuntime();
